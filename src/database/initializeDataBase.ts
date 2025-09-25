@@ -1,10 +1,6 @@
 import { type SQLiteDatabase } from "expo-sqlite"
 
 export async function initializeDataBase(database: SQLiteDatabase) {
-  // --------------------- usado para resetar as tabelas quando inicializar -----------------------
-  // await database.execAsync(`DROP TABLE IF EXISTS entradas;`);
-  // await database.execAsync(`DROP TABLE IF EXISTS saidas;`);
-
   await database.execAsync(`
     CREATE TABLE IF NOT EXISTS entradas (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -13,7 +9,7 @@ export async function initializeDataBase(database: SQLiteDatabase) {
       valor REAL NOT NULL,
       dataRecebimento TEXT NOT NULL,
       dataRegistro TEXT NOT NULL
-    );
+    )
   `)
 
   await database.execAsync(`
@@ -24,9 +20,11 @@ export async function initializeDataBase(database: SQLiteDatabase) {
       valor REAL NOT NULL,
       dataVencimento TEXT NOT NULL,
       dataPagamento TEXT NOT NULL,
-      statusPago INTEGER NOT NULL DEFAULT 0, -- 0 = A pagar | 1 = Pago
+      statusPago INTEGER NOT NULL DEFAULT 0,
       tipoPagamento TEXT NOT NULL,
+      tipoPagamentoQuant INTERGER NOT NULL,
+      tipoParcelamento TEXT NOT NULL,
       dataRegistro TEXT NOT NULL
-    );
+    )
   `)
 }

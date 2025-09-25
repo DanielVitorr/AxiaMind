@@ -18,6 +18,8 @@ export type Saidas = {
   dataPagamento: string
   statusPago: number | null
   tipoPagamento: string | null
+  tipoPagamentoQuant: number | null
+  tipoParcelamento: string | null
   dataRegistro: string
 }
 
@@ -70,8 +72,8 @@ export default function useFinancasDataBase() {
   // ======================= Saidas =======================
   async function createSaidas(data: Omit<Saidas, 'id'>) {
     const statement = await database.prepareAsync(
-      `INSERT INTO saidas (titulo, categoria, valor, dataVencimento, dataPagamento, statusPago, tipoPagamento, dataRegistro)
-       VALUES ($titulo, $categoria, $valor, $dataVencimento, $dataPagamento, $statusPago, $tipoPagamento, $dataRegistro)`
+      `INSERT INTO saidas (titulo, categoria, valor, dataVencimento, dataPagamento, statusPago, tipoPagamento, tipoPagamentoQuant, tipoParcelamento, dataRegistro)
+       VALUES ($titulo, $categoria, $valor, $dataVencimento, $dataPagamento, $statusPago, $tipoPagamento, $tipoPagamentoQuant, $tipoParcelamento, $dataRegistro)`
     )
 
     try {
@@ -83,6 +85,8 @@ export default function useFinancasDataBase() {
         $dataPagamento: data.dataPagamento,
         $statusPago: data.statusPago ? 1 : 0,
         $tipoPagamento: data.tipoPagamento,
+        $tipoPagamentoQuant: data.tipoPagamentoQuant,
+        $tipoParcelamento: data.tipoParcelamento,
         $dataRegistro: data.dataRegistro
       })
 

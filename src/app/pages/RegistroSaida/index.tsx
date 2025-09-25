@@ -47,6 +47,8 @@ export default function RegistroSaida() {
   const [dayPagamento, setDayPagamento] = useState<DateData>()
   const [showCalendarVencimento, setShowCalendarVencimento] = useState(false)
   const [showCalendarPagamento, setShowCalendarPagamento] = useState(false)
+  const [calendarDateVencimento, setCalendarDateVencimento] = useState<string | null>(null)
+  const [calendarDatePagamento, setCalendarDatePagamento] = useState<string | null>(null)
 
   const [valorReal, setValorReal] = useState("")
   const [titulo, setTitulo] = useState("")
@@ -54,8 +56,6 @@ export default function RegistroSaida() {
   const [selectDateVencimento, setSelectDateVencimento] = useState<string | null>(null)
   const [selectDatePagamento, setSelectDatePagamento] = useState<string | null>(null)
   const [selectStatusPago, setSelectStatusPago] = useState<number | null>(null)
-  const [calendarDateVencimento, setCalendarDateVencimento] = useState<string | null>(null)
-  const [calendarDatePagamento, setCalendarDatePagamento] = useState<string | null>(null)
   const [selectTipoPagamento, setSelectTipoPagamento] = useState<string | null>(null)
   const [selectTipoPagamentoQuant, setSelectTipoPagamentoQuant] = useState<number | null>(null)
   const [selectTipoParcelamento, setSelectTipoParcelamento] = useState<string | null>(null)
@@ -161,6 +161,8 @@ export default function RegistroSaida() {
         dataPagamento: selectDatePagamento,
         tipoPagamento: selectTipoPagamento,
         statusPago: selectStatusPago,
+        tipoPagamentoQuant: selectTipoPagamentoQuant,
+        tipoParcelamento: selectTipoParcelamento,
         dataRegistro: dayjs().format('YYYY-MM-DD')
       })
 
