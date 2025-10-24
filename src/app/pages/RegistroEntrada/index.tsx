@@ -14,40 +14,21 @@ import { Calendar, DateData, LocaleConfig } from "react-native-calendars";
 import dayjs from "dayjs";
 
 import { createEntredas } from "@/src/database/mmkvFinancas";
+import { getCategoria } from "@/src/database/mmkvCategorias";
 
 import { ptBR } from "@/src/utils/localeCalenderConfig";
 import { style } from "./style";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import PickerCostumizado from "@/src/components/PickerCostumizado";
+import { MaterialIcons } from "@expo/vector-icons";
 
 LocaleConfig.locales["pt-br"] = ptBR;
 LocaleConfig.defaultLocale = "pt-br";
 
-const categorias = [
-  "Alimentação",
-  "Assinaturas",
-  "Compras e lazer",
-  "Educação e desenvolvimento",
-  "Emergências",
-  "Entretedimento digital",
-  "Hobbies e atividades de lazer",
-  "Impostos e taxas",
-  "Investimentos",
-  "Manutenção e reparos",
-  "Moradia",
-  "Outros",
-  "Poupança",
-  "Renda",
-  "Saúde e bem-estar",
-  "Seguros",
-  "Serviços financeiros e bancarios",
-  "Streaming",
-  "Transferencias e pagamentos",
-  "Transportes",
-  "Viagens",
-];
-
 export default function RegistroEntrada() {
   const router = useRouter();
+
+  const categorias = getCategoria();
 
   const [day, setDay] = useState<DateData>();
   const [showCalendar, setShowCalendar] = useState(false);
@@ -99,7 +80,7 @@ export default function RegistroEntrada() {
     setValorReal(formatarReal(text));
   };
 
-  const registrarEntreda = async () => {
+  const registrarEntreda = () => {
     if (!valorReal || !selectCategoria || !dataRecebimento) {
       alert("Preencher todos os campos!");
       return;
@@ -162,28 +143,7 @@ export default function RegistroEntrada() {
             </View>
             <View style={style.inputs}>
               <Text style={style.inputsTexto}>Categoria</Text>
-              <View style={style.selectCategoria}>
-                <Picker
-                  selectedValue={selectCategoria}
-                  onValueChange={(itemValue, intemIndex) =>
-                    setSelectCategoria(itemValue)
-                  }
-                >
-                  <Picker.Item
-                    label="Selecinar"
-                    value=""
-                    style={style.selectCategoriaTexto}
-                  />
-                  {categorias.map((categorias, index) => (
-                    <Picker.Item
-                      key={index}
-                      label={categorias}
-                      value={categorias}
-                      style={style.selectCategoriaTexto}
-                    />
-                  ))}
-                </Picker>
-              </View>
+              <PickerCostumizado />
             </View>
 
             <View style={style.containerDataRecebimento}>

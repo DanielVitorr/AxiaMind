@@ -382,8 +382,8 @@ export default function ListaRegistro() {
           <PeriodoSelect
             showPeriodo={showPeriodo}
             handleShowPeriodo={() => setShowPeriodo(!showPeriodo)}
-            setPeriodo={(range) => setPeriodo(range)}
             periodo={periodo}
+            setPeriodo={setPeriodo}
           />
 
           <TouchableOpacity style={style.contentButtonAplicar}>

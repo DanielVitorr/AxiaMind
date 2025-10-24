@@ -20,10 +20,7 @@ export default function PeriodoSelect({
   const slideAnim = useRef(new Animated.Value(0)).current;
   const opacityAnim = useRef(new Animated.Value(0)).current;
 
-  const [selectedRange, setSelectedRange] = useState<{
-    startDate?: string;
-    endDate?: string;
-  }>({});
+  const selectedRange = periodo;
 
   useEffect(() => {
     if (showPeriodo) {
@@ -62,18 +59,18 @@ export default function PeriodoSelect({
       !selectedRange.startDate ||
       (selectedRange.startDate && selectedRange.endDate)
     ) {
-      setSelectedRange({ startDate: dateString, endDate: undefined });
+      setPeriodo({ startDate: dateString, endDate: undefined });
     } else if (selectedRange.startDate && !selectedRange.endDate) {
       const start = new Date(selectedRange.startDate);
       const end = new Date(dateString);
 
       if (end < start) {
-        setSelectedRange({
+        setPeriodo({
           startDate: dateString,
           endDate: selectedRange.startDate,
         });
       } else {
-        setSelectedRange({ ...selectedRange, endDate: dateString });
+        setPeriodo({ ...selectedRange, endDate: dateString });
       }
     }
   };
@@ -115,11 +112,6 @@ export default function PeriodoSelect({
     return marked;
   };
 
-  // Atualiza o período no componente pai
-  useEffect(() => {
-    setPeriodo(selectedRange);
-  }, [selectedRange]);
-
   const animatedStyle = {
     transform: [
       {
@@ -132,18 +124,15 @@ export default function PeriodoSelect({
     opacity: opacityAnim,
   };
 
-  const startDate = dayjs(selectedRange.startDate).format("DD/MM/YYYY");
-  const endDate = dayjs(selectedRange.endDate).format("DD/MM/YYYY");
+  const startDate = selectedRange.startDate
+    ? dayjs(selectedRange.startDate).format("DD/MM/YYYY")
+    : null;
+  const endDate = selectedRange.endDate
+    ? dayjs(selectedRange.endDate).format("DD/MM/YYYY")
+    : null;
 
   const resumoPeriodo =
     startDate && endDate ? `${startDate} até ${endDate}` : "Selecionar";
-
-  useEffect(() => {
-    setSelectedRange({});
-  }, [selectedRange]);
-
-  console.log(selectedRange);
-  console.log(resumoPeriodo);
 
   return (
     <View style={{ gap: 10 }}>
@@ -155,12 +144,12 @@ export default function PeriodoSelect({
           alignItems: "center",
           justifyContent: "space-between",
           padding: 10,
-          backgroundColor: "#eee",
+          backgroundColor: "#ffffffff",
           borderRadius: 8,
         }}
         onPress={handleShowPeriodo}
       >
-        <Text>{resumoPeriodo}</Text>
+        <Text style={{ fontSize: 16 }}>{resumoPeriodo}</Text>
         <MaterialIcons
           name={showPeriodo ? "arrow-drop-up" : "arrow-drop-down"}
           size={24}
