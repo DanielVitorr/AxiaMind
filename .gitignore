@@ -1,7 +1,7 @@
 # Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
 
 # Ignorar arquivos
-.lista_de_arquivos
+.lista_de_pendencias
 
 # dependencies
 node_modules/
