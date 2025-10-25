@@ -1,5 +1,5 @@
 import { MaterialIcons } from "@expo/vector-icons";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   FlatList,
   Modal,
@@ -49,19 +49,115 @@ const CORES_PREDEFINIDAS = [
   { cor: "#6A89CC", nome: "Azul Suave" },
 ];
 
-const materialIconsGlyphMap = MaterialIcons.getRawGlyphMap();
-const ALL_MATERIAL_ICONS = Object.keys(materialIconsGlyphMap);
+const ICONES_MATERIAIS = [
+  "home",
+  "person",
+  "settings",
+  "search",
+  "check",
+  "cancel",
+  "edit",
+  "favorite",
+  "share",
+  "info",
+  "warning",
+  "error",
+  "help",
+  "notifications",
+  "email",
+  "phone",
+  "chat",
+  "sms",
+  "location-on",
+  "map",
+  "directions",
+  "navigation",
+  "calendar-today",
+  "supervisor-account",
+  "lock",
+  "lock-open",
+  "security",
+  "vpn-key",
+  "photo",
+  "camera",
+  "videocam",
+  "music-note",
+  "movie",
+  "computer",
+  "phone-android",
+  "tablet",
+  "laptop",
+  "tv",
+  "gamepad",
+  "toys",
+  "shopping-cart",
+  "store",
+  "local-offer",
+  "receipt",
+  "credit-card",
+  "attach-money",
+  "account-balance",
+  "trending-up",
+  "trending-down",
+  "work",
+  "business",
+  "school",
+  "local-library",
+  "fitness-center",
+  "directions-run",
+  "pool",
+  "sports-soccer",
+  "restaurant",
+  "local-cafe",
+  "local-bar",
+  "hotel",
+  "local-hospital",
+  "healing",
+  "pharmacy",
+  "favorite",
+  "nature",
+  "pets",
+  "spa",
+  "beach-access",
+  "drive-eta",
+  "flight",
+  "directions-bus",
+  "train",
+  "whatshot",
+  "build",
+  "construction",
+  "engineering",
+  "science",
+  "palette",
+  "brush",
+  "color-lens",
+  "photo-camera",
+  "wifi",
+];
 
 export default function PickerCostumizado() {
   const [selected, setSelected] = useState();
+  const [selectedColorNome, setSelectedColorNome] = useState("");
+  const [iconeSelecionado, setIconeSelecionado] = useState(true);
+
   const [modalVisible, setModalVisible] = useState(false);
   const [modalNovaCategoria, setModalNovaCategoria] = useState(false);
+
   const [selectedColor, setSelectedColor] = useState("");
-  const [selectedColorNome, setSelectedColorNome] = useState("");
   const [nomeCategoria, setNomeCategoria] = useState("");
   const [nomeIcone, setNomeIcone] = useState("");
 
-  const categorias = getCategoria();
+  const [categorias, setCategorias] = useState([]);
+
+  const carregarCategorias = () => {
+    const categoriasSalvas = getCategoria();
+    // @ts-ignore
+    setCategorias(categoriasSalvas || []);
+  };
+
+  useEffect(() => {
+    carregarCategorias();
+  }, []);
 
   // @ts-ignore
   const handleColorSelect = (color) => {
@@ -75,15 +171,24 @@ export default function PickerCostumizado() {
       return;
     }
 
-    createCategoria({
-      titulo: nomeCategoria,
-      nomeIcone: nomeIcone,
-      corIcone: selectedColor,
-    });
+    try {
+      createCategoria({
+        titulo: nomeCategoria,
+        nomeIcone: nomeIcone,
+        corIcone: selectedColor,
+      });
 
-    setNomeCategoria("");
-    setSelectedColor("");
-    setModalNovaCategoria(false);
+      carregarCategorias();
+
+      setNomeCategoria("");
+      setSelectedColor("");
+      setNomeIcone("");
+      setModalNovaCategoria(false);
+
+      alert("Categoria criada com sucesso!");
+    } catch (error) {
+      throw error;
+    }
   };
 
   // @ts-ignore
@@ -129,7 +234,10 @@ export default function PickerCostumizado() {
           borderRadius: 8,
           backgroundColor: "#fff",
         }}
-        onPress={() => setModalVisible(true)}
+        onPress={() => {
+          setModalVisible(true);
+          carregarCategorias();
+        }}
       >
         <View
           style={{ flexDirection: "row", alignItems: "center", height: 35 }}
@@ -197,11 +305,13 @@ export default function PickerCostumizado() {
                 Selectione a categoria
               </Text>
             </View>
-            <FlatList
-              data={categorias}
-              renderItem={renderItem}
-              keyExtractor={(item) => item.id.toString()}
-            />
+            {categorias.length > 0 && (
+              <FlatList
+                data={categorias}
+                renderItem={renderItem}
+                keyExtractor={(item) => item.id.toString()}
+              />
+            )}
             <TouchableOpacity
               style={{
                 flexDirection: "row",
@@ -239,6 +349,8 @@ export default function PickerCostumizado() {
           </View>
         </View>
       </Modal>
+
+      {/* -------------------- Modal nova categoria -------------------- */}
       <Modal
         visible={modalNovaCategoria}
         animationType="slide"
@@ -276,14 +388,19 @@ export default function PickerCostumizado() {
                   borderColor: "#ddd",
                   fontSize: 16,
                 }}
+                value={nomeCategoria}
+                onChangeText={setNomeCategoria}
               />
 
-              <View style={{ padding: 20 }}>
-                <Text style={{ fontSize: 16, marginBottom: 10 }}>
+              {/* -------------------- Select de cor -------------------- */}
+              <View>
+                <Text
+                  style={{ fontSize: 18, marginBottom: 10, fontWeight: "bold" }}
+                >
                   Selecione uma cor:
                 </Text>
 
-                {/* Cor selecionada */}
+                {/* -------------------- Cor selecionada -------------------- */}
                 <View
                   style={{
                     flexDirection: "row",
@@ -307,7 +424,7 @@ export default function PickerCostumizado() {
                   </Text>
                 </View>
 
-                {/* Paleta de cores */}
+                {/* -------------------- Paleta de cores -------------------- */}
                 <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                   <View
                     style={{ flexDirection: "row", flexWrap: "wrap", gap: 10 }}
@@ -330,28 +447,85 @@ export default function PickerCostumizado() {
                   </View>
                 </ScrollView>
               </View>
+
+              {/* -------------------- Select de ícone -------------------- */}
               <View>
                 <View>
-                  <Text style={{ fontSize: 16, marginBottom: 10 }}>
+                  <Text
+                    style={{
+                      fontSize: 18,
+                      marginBottom: 10,
+                      fontWeight: "bold",
+                    }}
+                  >
                     Selecione um ícone:
                   </Text>
                 </View>
+
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    marginBottom: 20,
+                  }}
+                >
+                  <View
+                    style={{
+                      width: 40,
+                      height: 40,
+                      borderRadius: 8,
+                      backgroundColor: nomeIcone || "#f0f0f0",
+                      marginRight: 10,
+                      borderWidth: 2,
+                      borderColor: "#ccc",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <MaterialIcons
+                      /* @ts-ignore */
+                      name={nomeIcone}
+                      size={30}
+                      color="#000"
+                    />
+                  </View>
+                  <Text style={{ fontSize: 16 }}>
+                    {nomeIcone || "Nenhuma icone selecionada"}
+                  </Text>
+                </View>
+
                 <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                   <View
                     style={{ flexDirection: "row", flexWrap: "wrap", gap: 10 }}
                   >
-                    <VirtualizedList
-                      initialNumToRender={10}
-                      renderItem={({}) => (
-                        <View>
-                          {" "}
-                          <MaterialIcons />{" "}
-                        </View>
-                      )}
-                    />
+                    {ICONES_MATERIAIS.map((icone, index) => (
+                      <TouchableOpacity
+                        key={index}
+                        onPress={() => setNomeIcone(icone)}
+                        style={{
+                          width: 40,
+                          height: 40,
+                          borderRadius: 8,
+                          backgroundColor: "#2d2d2d",
+                          borderWidth: 1,
+                          borderColor: "#ddd",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <MaterialIcons
+                          /* @ts-ignore */
+                          name={icone}
+                          size={30}
+                          color={"#fff"}
+                        />
+                      </TouchableOpacity>
+                    ))}
                   </View>
                 </ScrollView>
               </View>
+
+              {/* -------------------- Botão Cadastrar -------------------- */}
               <TouchableOpacity
                 style={{
                   padding: 10,
@@ -359,12 +533,12 @@ export default function PickerCostumizado() {
                   borderRadius: 8,
                   alignItems: "center",
                 }}
-                onPress={() => setModalNovaCategoria(false)}
+                onPress={() => handleCriarCategoria()}
               >
                 <Text
                   style={{ color: "white", fontSize: 18, fontWeight: "bold" }}
                 >
-                  Fechar
+                  Adiconar Categoria
                 </Text>
               </TouchableOpacity>
             </View>

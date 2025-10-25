@@ -56,7 +56,7 @@ const CATEGORIAS_PREDEFINIDAS: Omit<Categoria, "id">[] = [
 ];
 
 // Apenas para forçar a atualização das categorias predefinidas (para testes)
-const FORCE_UPDATE_CATEGORIAS = true;
+const FORCE_UPDATE_CATEGORIAS = false;
 
 function getData<T>(key: string): T[] {
   const json = storage.getString(key);
