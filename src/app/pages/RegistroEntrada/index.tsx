@@ -8,8 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { useState } from "react";
-import { Picker } from "@react-native-picker/picker";
+import { useEffect, useState } from "react";
 import { Calendar, DateData, LocaleConfig } from "react-native-calendars";
 import dayjs from "dayjs";
 
@@ -20,15 +19,12 @@ import { ptBR } from "@/src/utils/localeCalenderConfig";
 import { style } from "./style";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import PickerCostumizado from "@/src/components/PickerCostumizado";
-import { MaterialIcons } from "@expo/vector-icons";
 
 LocaleConfig.locales["pt-br"] = ptBR;
 LocaleConfig.defaultLocale = "pt-br";
 
 export default function RegistroEntrada() {
   const router = useRouter();
-
-  const categorias = getCategoria();
 
   const [day, setDay] = useState<DateData>();
   const [showCalendar, setShowCalendar] = useState(false);
@@ -37,7 +33,19 @@ export default function RegistroEntrada() {
   const [valorReal, setValorReal] = useState("");
   const [dataRecebimento, setDataRecebimento] = useState<string | null>(null);
   const [calendarDate, setCalendarDate] = useState<string | null>(null);
-  const [selectCategoria, setSelectCategoria] = useState();
+  const [selectCategoria, setSelectCategoria] = useState<string | null>(null);
+  const [categoria, setCategoria] = useState<string | null>(null);
+
+  const carregarCategorias = () => {
+    const categorias = getCategoria();
+    const titulos = categorias.map((cat: any) => cat.titulo);
+    // @ts-ignore
+    setCategoria(titulos);
+  };
+
+  useEffect(() => {
+    carregarCategorias();
+  }, []);
 
   const handleSelect = (option: "hoje" | "ontem") => {
     const hoje = dayjs().format("YYYY-MM-DD");
@@ -143,7 +151,11 @@ export default function RegistroEntrada() {
             </View>
             <View style={style.inputs}>
               <Text style={style.inputsTexto}>Categoria</Text>
-              <PickerCostumizado />
+              <PickerCostumizado
+                // @ts-ignore
+                options={selectCategoria}
+                onChange={(value) => setSelectCategoria(value)}
+              />
             </View>
 
             <View style={style.containerDataRecebimento}>

@@ -23,6 +23,7 @@ import {
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Checkbox from "@/src/components/Checkbox";
 import PeriodoSelect from "@/src/components/PeriodoSelect";
+import { getCategoria } from "@/src/database/mmkvCategorias";
 
 dayjs.locale("pt-br");
 
@@ -53,20 +54,7 @@ interface Saidas {
 export default function ListaRegistro() {
   const router = useRouter();
   const [checked, setChecked] = useState({});
-  const optionsCategoria = [
-    {
-      id: 1,
-      titulo: "renda",
-    },
-    {
-      id: 2,
-      titulo: "alimentação",
-    },
-    {
-      id: 3,
-      titulo: "transporte",
-    },
-  ];
+
   const [showCategoria, setShowCategoria] = useState(false);
   const [showPeriodo, setShowPeriodo] = useState(false);
   const [periodo, setPeriodo] = useState<{
@@ -79,6 +67,27 @@ export default function ListaRegistro() {
   const [resumoSaidas, setResumoSaidas] = useState<Saidas[]>([]);
   const [filterStatus, setFilterStatus] = useState("all");
   const [filterTipoRegistro, setFilterTipoRegistro] = useState("all");
+
+  const [categorias, setCategorias] = useState([]);
+
+  const tituloCategorias = categorias.map((cat: any) => cat.titulo);
+
+  // ---------------------- Carregar categorias e detalhes ----------------------
+  const carregarCategorias = () => {
+    const categorias = getCategoria();
+    //@ts-ignore
+    setCategorias(categorias || []);
+  };
+
+  useEffect(() => {
+    carregarCategorias();
+  }, []);
+
+  function getCategoriasDetalhes(titulo: string) {
+    // @ts-ignore
+    const categoria = categorias.find((cat) => cat.titulo === titulo);
+    return categoria;
+  }
 
   // ---------------------- Animação Filtro ----------------------
   const translateY = useRef(new Animated.Value(900)).current;
@@ -214,6 +223,7 @@ export default function ListaRegistro() {
         </View>
       </View>
 
+      {/* -------------------- Botão Filtro -------------------- */}
       <Animated.View
         style={[style.bottomSheet, { transform: [{ translateY }] }]}
         {...panResponder.panHandlers}
@@ -371,7 +381,7 @@ export default function ListaRegistro() {
                 }}
               >
                 <Checkbox
-                  options={optionsCategoria}
+                  options={tituloCategorias}
                   onChange={(op) => setChecked(op)}
                 />
               </View>
@@ -410,82 +420,119 @@ export default function ListaRegistro() {
 
                 return Object.entries(agrupar).map(([data, registros]) => (
                   <View key={data} style={{ marginBottom: 20, gap: 10 }}>
-                    <Text
+                    <View
                       style={{
-                        fontWeight: "bold",
-                        fontSize: 16,
-                        color: "#333",
+                        flexDirection: "row",
+                        gap: 10,
+                        alignItems: "center",
                         marginBottom: 8,
                       }}
                     >
-                      {formatarDataPorExtenso(data)}
-                    </Text>
+                      <View
+                        style={{
+                          height: 20,
+                          width: 20,
+                          borderRadius: 50,
+                          backgroundColor: "#31a1c4ff",
+                        }}
+                      />
+                      <Text
+                        style={{
+                          fontWeight: "bold",
+                          fontSize: 16,
+                          color: "#333",
+                        }}
+                      >
+                        {formatarDataPorExtenso(data)}
+                      </Text>
+                    </View>
 
-                    {registros.map((item) => (
-                      <TouchableOpacity key={item.id} style={style.card}>
-                        <View style={style.cardTitulos}>
-                          <View>
-                            <Text>Icone</Text>
-                          </View>
-                          <View>
-                            <View style={{ flexDirection: "row" }}>
-                              <Text style={style.cardTituloTexto}>
-                                {item.titulo}
-                              </Text>
+                    {registros.map((item) => {
+                      const categoriasDetalhes = getCategoriasDetalhes(
+                        item.categoria
+                      );
 
-                              {/* Só mostra statusPago se for uma Saída */}
-                              {"statusPago" in item && (
-                                <Text
-                                  style={[
-                                    item.statusPago === 1
-                                      ? { color: "#10B981", fontWeight: "bold" }
-                                      : {
-                                          color: "#F87171",
-                                          fontWeight: "bold",
-                                        },
-                                  ]}
-                                >
-                                  {" - " +
-                                    (item.statusPago === 1
-                                      ? "Pago"
-                                      : "Não Pago")}
-                                </Text>
-                              )}
+                      return (
+                        <TouchableOpacity key={item.id} style={style.card}>
+                          <View style={style.cardTitulos}>
+                            <View
+                              style={{
+                                padding: 10,
+                                borderRadius: 50,
+                                // @ts-ignore
+                                backgroundColor: categoriasDetalhes.corIcone,
+                              }}
+                            >
+                              <MaterialIcons
+                                // @ts-ignore
+                                name={categoriasDetalhes.nomeIcone}
+                                size={25}
+                                color={"white"}
+                              />
                             </View>
+                            <View>
+                              <View style={{ flexDirection: "row" }}>
+                                <Text style={style.cardTituloTexto}>
+                                  {item.titulo}
+                                </Text>
 
-                            <Text style={style.cardTituloCategoria}>
-                              {item.categoria}
-                            </Text>
+                                {/* Só mostra statusPago se for uma Saída */}
+                                {"statusPago" in item && (
+                                  <Text
+                                    style={[
+                                      item.statusPago === 1
+                                        ? {
+                                            color: "#10B981",
+                                            fontWeight: "bold",
+                                          }
+                                        : {
+                                            color: "#F87171",
+                                            fontWeight: "bold",
+                                          },
+                                    ]}
+                                  >
+                                    {" - " +
+                                      (item.statusPago === 1
+                                        ? "Pago"
+                                        : "Não Pago")}
+                                  </Text>
+                                )}
+                              </View>
+
+                              <Text style={style.cardTituloCategoria}>
+                                {item.categoria}
+                              </Text>
+                            </View>
                           </View>
-                        </View>
 
-                        <View style={{ alignItems: "flex-end" }}>
-                          <Text
-                            style={
-                              "statusPago" in item
-                                ? style.cardSaidaValor
-                                : style.cardEntradaValor
-                            }
-                          >
-                            {formatarValor(item.valor)}
-                          </Text>
-
-                          {/* Só exibe "Efetuar Pagamento" se for saída e não estiver paga */}
-                          {"statusPago" in item && item.statusPago === 0 ? (
-                            <TouchableOpacity>
-                              <Text>Efetuar Pagamento</Text>
-                            </TouchableOpacity>
-                          ) : (
-                            <Text>
-                              {"tipoParcelamento" in item &&
-                                item.tipoParcelamento}
-                              {"quantidadeParcelas" in item &&
-                                item.quantidadeParcelas}
+                          <View style={{ alignItems: "flex-end" }}>
+                            <Text
+                              style={
+                                "statusPago" in item
+                                  ? style.cardSaidaValor
+                                  : style.cardEntradaValor
+                              }
+                            >
+                              {formatarValor(item.valor)}
                             </Text>
-                          )}
-                        </View>
-                      </TouchableOpacity>
-                    ))}
+
+                            {/* Só exibe "Efetuar Pagamento" se for saída e não estiver paga */}
+                            {"statusPago" in item && item.statusPago === 0 ? (
+                              <TouchableOpacity>
+                                <Text>Efetuar Pagamento</Text>
+                              </TouchableOpacity>
+                            ) : (
+                              <Text>
+                                {"tipoParcelamento" in item &&
+                                  item.tipoParcelamento}
+                                {"quantidadeParcelas" in item &&
+                                  item.quantidadeParcelas}
+                              </Text>
+                            )}
+                          </View>
+                        </TouchableOpacity>
+                      );
+                    })}
                   </View>
                 ));
               })()}

@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Picker } from "@react-native-picker/picker";
 import { Calendar, DateData, LocaleConfig } from "react-native-calendars";
 import dayjs from "dayjs";
@@ -18,6 +18,8 @@ import { createSaidasParceladas } from "@/src/database/mmkvFinancas";
 import { ptBR } from "@/src/utils/localeCalenderConfig";
 import { style } from "./style";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import PickerCostumizado from "@/src/components/PickerCostumizado";
+import { getCategoria } from "@/src/database/mmkvCategorias";
 
 LocaleConfig.locales["pt-br"] = ptBR;
 LocaleConfig.defaultLocale = "pt-br";
@@ -83,6 +85,17 @@ export default function RegistroSaida() {
   const [dataRegistro, setDataRegistro] = useState(
     dayjs().format("YYYY-MM-DD")
   );
+
+  const carregarCategorias = () => {
+    const categorias = getCategoria();
+
+    // @ts-ignore
+    setSelectCategoria(categorias.map((cat: any) => cat.titulo));
+  };
+
+  useEffect(() => {
+    carregarCategorias();
+  }, []);
 
   const handleSelectDayVencimento = (option: "hoje" | "ontem") => {
     const hoje = dayjs().format("YYYY-MM-DD");
@@ -199,7 +212,7 @@ export default function RegistroSaida() {
         dataRegistro,
       });
 
-      alert("Entrada registrada com sucesso!");
+      alert("Registro realizado com sucesso!");
       router.push("/");
 
       console.log(dataRegistro);
@@ -255,24 +268,11 @@ export default function RegistroSaida() {
           <View style={style.contentInputs}>
             <Text style={style.contentTitulo}>Categoria</Text>
             <View style={style.selectList}>
-              <Picker
-                selectedValue={selectCategoria}
-                onValueChange={(itemValue) => setSelectCategoria(itemValue)}
-              >
-                <Picker.Item
-                  label="Selecinar"
-                  value=""
-                  style={style.selectCategoriaTexto}
-                />
-                {categorias.map((categorias, index) => (
-                  <Picker.Item
-                    key={index}
-                    label={categorias}
-                    value={categorias}
-                    style={style.selectCategoriaTexto}
-                  />
-                ))}
-              </Picker>
+              <PickerCostumizado
+                // @ts-ignore
+                options={selectCategoria}
+                onChange={(value) => setSelectCategoria(value)}
+              />
             </View>
           </View>
 

@@ -12,6 +12,11 @@ import {
 } from "react-native";
 import { createCategoria, getCategoria } from "../database/mmkvCategorias";
 
+type Props = {
+  options: string[];
+  onChange: (value: string) => void;
+};
+
 const CORES_PREDEFINIDAS = [
   { cor: "#E74C3C", nome: "Vermelho Vibrante" },
   { cor: "#3498DB", nome: "Azul Forte" },
@@ -135,10 +140,9 @@ const ICONES_MATERIAIS = [
   "wifi",
 ];
 
-export default function PickerCostumizado() {
+export default function PickerCostumizado({ options, onChange }: Props) {
   const [selected, setSelected] = useState();
   const [selectedColorNome, setSelectedColorNome] = useState("");
-  const [iconeSelecionado, setIconeSelecionado] = useState(true);
 
   const [modalVisible, setModalVisible] = useState(false);
   const [modalNovaCategoria, setModalNovaCategoria] = useState(false);
@@ -204,6 +208,7 @@ export default function PickerCostumizado() {
         }}
         onPress={() => {
           setSelected(item);
+          onChange(item.titulo);
           setModalVisible(false);
         }}
       >

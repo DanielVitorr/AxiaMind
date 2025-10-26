@@ -97,3 +97,5 @@ export function getCategoria() {
 
   return categoria;
 }
+
+console.log("Categorias carregadas:", getCategoria());

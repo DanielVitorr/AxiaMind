@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { TouchableOpacity, View } from "react-native";
+import { Alert, Text, TouchableOpacity, View } from "react-native";
 import { style } from "./style";
 
 import MesCarrossel from "@/src/components/MesCarrossel";
@@ -12,7 +12,7 @@ import BarraDeNavegacao from "../components/BarraDeNavegacao";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import Feather from "@expo/vector-icons/Feather";
 
-import { getResumoPorMes } from "../database/mmkvFinancas";
+import { getResumoPorMes, storage } from "../database/mmkvFinancas";
 
 export default function Index() {
   const [resumo, setResumo] = useState<{
@@ -42,8 +42,7 @@ export default function Index() {
 
   useEffect(() => {
     carregarResumo(currentDate);
-  }, [currentDate]);
-  // console.log(resumo)
+  }, [storage, currentDate]);
 
   return (
     <View style={style.main}>
@@ -79,6 +78,16 @@ export default function Index() {
         <MinhaMetas />
         <MeusLimites />
       </View>
+
+      <TouchableOpacity
+        onPress={() => {
+          storage.clearAll();
+          alert("Todos os registros foram apagados!");
+          console.log(storage.getAllKeys());
+        }}
+      >
+        <Text>Limpar Registros MMKV</Text>
+      </TouchableOpacity>
 
       <BarraDeNavegacao />
     </View>
