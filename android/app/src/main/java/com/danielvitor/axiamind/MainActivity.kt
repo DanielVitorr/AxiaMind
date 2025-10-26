@@ -1,4 +1,4 @@
-package com.anonymous.AxiaMind
+package com.danielvitor.axiamind
 import expo.modules.splashscreen.SplashScreenManager
 
 import android.os.Build

@@ -1,4 +1,4 @@
-package com.anonymous.AxiaMind
+package com.danielvitor.axiamind
 
 import android.app.Application
 import android.content.res.Configuration
