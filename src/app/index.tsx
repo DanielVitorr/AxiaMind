@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Alert, Text, TouchableOpacity, View } from "react-native";
-import { style } from "./style";
+import { Alert, Switch, Text, TouchableOpacity, View } from "react-native";
+import Main, { style } from "./style";
 
 import MesCarrossel from "@/src/components/MesCarrossel";
 import ResumoFinanceiro from "@/src/components/ResumoFinanceiro";
@@ -9,10 +9,11 @@ import MinhaMetas from "@/src/components/MinhasMetas";
 import MeusLimites from "@/src/components/MeusLimites";
 import BarraDeNavegacao from "../components/BarraDeNavegacao";
 
-import FontAwesome from "@expo/vector-icons/FontAwesome";
 import Feather from "@expo/vector-icons/Feather";
 
 import { getResumoPorMes, storage } from "../database/mmkvFinancas";
+import { MaterialIcons } from "@expo/vector-icons";
+import { useAppTheme } from "../contexts/ThemeContext";
 
 export default function Index() {
   const [resumo, setResumo] = useState<{
@@ -31,6 +32,8 @@ export default function Index() {
 
   const [currentDate, setCurrentDate] = useState(new Date());
 
+  const { theme, toggleTheme } = useAppTheme();
+
   async function carregarResumo(date: Date) {
     const mes = String(date.getMonth() + 1).padStart(2, "0");
     const ano = date.getFullYear();
@@ -45,25 +48,30 @@ export default function Index() {
   }, [storage, currentDate]);
 
   return (
-    <View style={style.main}>
-      <View style={style.header}>
-        <View style={style.containerTopBar}>
-          <TouchableOpacity style={style.botao}>
-            <FontAwesome name="bell" size={26} color="#1F2937" />
-          </TouchableOpacity>
-          <View>
-            <MesCarrossel
-              currentDate={currentDate}
-              onChangeMonth={setCurrentDate}
-              textColorPrimary="#1C1C1C"
-              textColorSecundary="#6E6E7A"
-            />
-          </View>
-          <TouchableOpacity style={style.botao}>
-            <Feather name="menu" size={26} color="#1F2937" />
-          </TouchableOpacity>
+    <Main>
+      <Main.Header>
+        <Main.Header.Button>
+          <MaterialIcons name="notifications" size={26} color="#1F2937" />
+        </Main.Header.Button>
+        <View>
+          <MesCarrossel
+            currentDate={currentDate}
+            onChangeMonth={setCurrentDate}
+            textColorPrimary="#1C1C1C"
+            textColorSecundary="#6E6E7A"
+          />
         </View>
-      </View>
+        <Main.Header.Button>
+          <Feather name="menu" size={26} color="#1F2937" />
+        </Main.Header.Button>
+        <Main.Header.Button>
+          <Switch
+            value={theme === "light"}
+            onValueChange={toggleTheme}
+            thumbColor={theme === "dark" ? "#f1f1f1" : "#121212"}
+          />
+        </Main.Header.Button>
+      </Main.Header>
 
       <View style={style.content}>
         <ResumoFinanceiro
@@ -90,6 +98,6 @@ export default function Index() {
       </TouchableOpacity>
 
       <BarraDeNavegacao />
-    </View>
+    </Main>
   );
 }

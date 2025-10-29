@@ -377,10 +377,20 @@ export default function PickerCostumizado({ options, onChange }: Props) {
               paddingBottom: 30,
             }}
           >
-            <View>
-              <Text style={{ fontSize: 18, fontWeight: "bold", padding: 20 }}>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                padding: 20,
+              }}
+            >
+              <Text style={{ fontSize: 18, fontWeight: "bold" }}>
                 Nova Categoria
               </Text>
+              <TouchableOpacity onPress={() => setModalNovaCategoria(false)}>
+                <MaterialIcons name="close" size={25} color="black" />
+              </TouchableOpacity>
             </View>
             <View style={{ paddingHorizontal: 20, gap: 15, marginBottom: 20 }}>
               <TextInput

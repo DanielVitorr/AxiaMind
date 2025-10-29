@@ -6,7 +6,10 @@
       "@/*": [
         "./*"
       ]
-    }
+    },
+    "types": [
+      "styled-components-react-native"
+    ]
   },
   "include": [
     "**/*.ts",

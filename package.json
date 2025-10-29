@@ -41,7 +41,8 @@
     "react-native-safe-area-context": "~5.6.0",
     "react-native-screens": "~4.16.0",
     "react-native-web": "^0.21.0",
-    "stream-browserify": "^3.0.0"
+    "stream-browserify": "^3.0.0",
+    "styled-components": "^6.1.19"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
@@ -50,6 +51,7 @@
     "@eslint/json": "^0.13.2",
     "@rocketseat/eslint-config": "^2.2.2",
     "@types/react": "^19.1.13",
+    "@types/styled-components-react-native": "^5.2.5",
     "eslint": "^9.37.0",
     "eslint-plugin-react": "^7.37.5",
     "globals": "^16.3.0",

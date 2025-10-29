@@ -1,31 +1,34 @@
 import { StyleSheet } from "react-native";
+import styled from "styled-components/native";
+
+const Main = styled.View`
+  flex: 1;
+  gap: 15;
+  background-color: ${({ theme }: any) => theme.colors.background};
+`;
+
+const Header = styled.View`
+  flex-direction: row;
+  background-color: ${({ theme }: any) => theme.colors.primary};
+  padding-top: 35;
+  padding-bottom: 10;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const Button = styled.TouchableOpacity`
+  padding: 10px;
+`;
+
+Main.Header = Header;
+Main.Header.Button = Button;
+
+export default Main;
 
 export const style = StyleSheet.create({
-  main: {
-    flex: 1,
-    gap: 15,
-    backgroundColor: "#F3F4F6",
-  },
-  header: {
-    flexDirection: "row",
-    backgroundColor: "#F9FAFB",
-    paddingTop: 25,
-    alignItems: "center",
-    justifyContent: "space-around",
-  },
-  containerTopBar: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: 15,
-  },
   content: {
     marginLeft: 20,
     marginRight: 20,
     gap: 15,
-  },
-  botao: {
-    padding: 10,
   },
 });
