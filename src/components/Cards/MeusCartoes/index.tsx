@@ -23,38 +23,3 @@ export default function MeusCartoes() {
     </View>
   );
 }
-
-const style = StyleSheet.create({
-  container: {
-    padding: 20,
-    backgroundColor: "#FFFFFF",
-    borderRadius: 12,
-  },
-  containerTitulo: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 5,
-    paddingBottom: 5,
-    borderBottomWidth: 1,
-    borderBottomColor: "rgba(0,0,0,0.05)",
-  },
-  titulo: {
-    flexDirection: "row",
-    gap: 10,
-  },
-  tituloTexto: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "#1F2937",
-  },
-  containerCartoes: {
-    flexDirection: "row",
-    minHeight: 100,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  textoSecundario: {
-    color: "#6B7280",
-  },
-});

@@ -3,10 +3,11 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { MMKV } from "react-native-mmkv";
 import { ThemeProvider } from "styled-components";
 
-type ThemeType = "dark" | "light";
+type ThemeName = "dark" | "light";
 
 type ThemeContextData = {
-  theme: ThemeType;
+  theme: typeof themes.darkTheme; // o objeto com as cores
+  themeName: ThemeName; // a string ("dark" ou "light")
   toggleTheme: () => void;
 };
 
@@ -15,26 +16,28 @@ const storage = new MMKV();
 const ThemeContext = createContext<ThemeContextData>({} as ThemeContextData);
 
 export function AppThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<ThemeType>("dark");
+  const [themeName, setThemeName] = useState<ThemeName>("dark");
 
   useEffect(() => {
     const saved = storage.getString("@theme");
     if (saved === "dark" || saved === "light") {
-      setTheme(saved);
+      setThemeName(saved);
     }
   }, []);
 
   const toggleTheme = () => {
-    const newTheme = theme === "dark" ? "light" : "dark";
-    setTheme(newTheme);
-    storage.set("theme", newTheme);
+    const newTheme = themeName === "dark" ? "light" : "dark";
+    setThemeName(newTheme);
+    storage.set("@theme", newTheme);
   };
 
-  const currentTheme = theme === "dark" ? themes.darkTheme : themes.lightTheme;
+  const theme = themeName === "dark" ? themes.darkTheme : themes.lightTheme;
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      <ThemeProvider theme={currentTheme}>{children}</ThemeProvider>
+    // @ts-ignore
+    <ThemeContext.Provider value={{ theme, themeName, toggleTheme }}>
+      {/* @ts-ignore */}
+      <ThemeProvider theme={theme}>{children}</ThemeProvider>
     </ThemeContext.Provider>
   );
 }

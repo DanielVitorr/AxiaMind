@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Alert, Switch, Text, TouchableOpacity, View } from "react-native";
-import Main, { style } from "./style";
+import { Switch, Text, TouchableOpacity, View } from "react-native";
+import Main from "./style";
 
 import MesCarrossel from "@/src/components/MesCarrossel";
 import ResumoFinanceiro from "@/src/components/ResumoFinanceiro";
@@ -32,7 +32,7 @@ export default function Index() {
 
   const [currentDate, setCurrentDate] = useState(new Date());
 
-  const { theme, toggleTheme } = useAppTheme();
+  const { theme, themeName, toggleTheme } = useAppTheme();
 
   async function carregarResumo(date: Date) {
     const mes = String(date.getMonth() + 1).padStart(2, "0");
@@ -51,29 +51,26 @@ export default function Index() {
     <Main>
       <Main.Header>
         <Main.Header.Button>
-          <MaterialIcons name="notifications" size={26} color="#1F2937" />
+          <MaterialIcons
+            name="notifications"
+            size={26}
+            color={theme.colors.accent}
+          />
         </Main.Header.Button>
         <View>
           <MesCarrossel
             currentDate={currentDate}
             onChangeMonth={setCurrentDate}
-            textColorPrimary="#1C1C1C"
-            textColorSecundary="#6E6E7A"
+            textColorPrimary={theme.colors.text}
+            textColorSecundary={theme.colors.textSecondary}
           />
         </View>
         <Main.Header.Button>
-          <Feather name="menu" size={26} color="#1F2937" />
-        </Main.Header.Button>
-        <Main.Header.Button>
-          <Switch
-            value={theme === "light"}
-            onValueChange={toggleTheme}
-            thumbColor={theme === "dark" ? "#f1f1f1" : "#121212"}
-          />
+          <Feather name="menu" size={26} color={theme.colors.accent} />
         </Main.Header.Button>
       </Main.Header>
 
-      <View style={style.content}>
+      <Main.Content>
         <ResumoFinanceiro
           totalReceitas={resumo.totalEntradas}
           totalDespesas={resumo.totalSaidas}
@@ -85,7 +82,7 @@ export default function Index() {
         <MeusCartoes />
         <MinhaMetas />
         <MeusLimites />
-      </View>
+      </Main.Content>
 
       <TouchableOpacity
         onPress={() => {
@@ -96,6 +93,14 @@ export default function Index() {
       >
         <Text>Limpar Registros MMKV</Text>
       </TouchableOpacity>
+
+      <Main.Header.Button>
+        <Switch
+          value={themeName === "light"}
+          onValueChange={toggleTheme}
+          thumbColor={themeName === "dark" ? "#f1f1f1" : "#121212"}
+        />
+      </Main.Header.Button>
 
       <BarraDeNavegacao />
     </Main>
