@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 import styled from "styled-components/native";
 
-const Container = styled.View`
+export const Container = styled.View`
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
@@ -14,14 +14,14 @@ const Container = styled.View`
   padding-bottom: 20;
 `;
 
-const Button = styled.TouchableOpacity`
+export const Button = styled.TouchableOpacity`
   height: 50;
   width: 50;
   justify-content: center;
   align-items: center;
 `;
 
-const Add = styled.TouchableOpacity`
+export const Add = styled.TouchableOpacity`
   height: 50;
   width: 50;
   justify-content: center;
@@ -30,9 +30,9 @@ const Add = styled.TouchableOpacity`
   border-radius: 10px;
 `;
 
-const Entry = styled.TouchableOpacity`
+export const Entry = styled.TouchableOpacity`
   padding: 15px;
-  background-color: ${({ theme }: any) => theme.colors.addEntry};
+  background-color: ${({ theme }: any) => theme.colors.Entry};
   border-radius: 10px;
   width: 100%;
   align-items: center;
@@ -40,9 +40,9 @@ const Entry = styled.TouchableOpacity`
   margin-right: 5px;
 `;
 
-const Exit = styled.TouchableOpacity`
+export const Exit = styled.TouchableOpacity`
   padding: 15px;
-  background-color: ${({ theme }: any) => theme.colors.addExit};
+  background-color: ${({ theme }: any) => theme.colors.Exit};
   border-radius: 10px;
   width: 100%;
   align-items: center;
@@ -50,26 +50,17 @@ const Exit = styled.TouchableOpacity`
   margin-right: 5px;
 `;
 
-const Text = styled.Text`
+export const Text = styled.Text`
   font-size: 18;
   color: ${({ theme }: any) => theme.colors.white};
   font-weight: bold;
 `;
 
-const Content = styled.View`
+export const Content = styled.View`
   flex: 1;
   width: 100%;
   gap: 10;
 `;
-
-Container.Button = Button;
-Container.Button.Add = Add;
-Container.Button.Entry = Entry;
-Container.Button.Exit = Exit;
-Container.Button.Text = Text;
-Container.Content = Content;
-
-export default Container;
 
 export const style = StyleSheet.create({
   bottomSheet: {
@@ -78,7 +69,7 @@ export const style = StyleSheet.create({
     left: 0,
     right: 0,
     height: 220,
-    backgroundColor: "#fff",
+    backgroundColor: "#1F1A3D",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: 20,
@@ -87,7 +78,7 @@ export const style = StyleSheet.create({
   handle: {
     width: 40,
     height: 5,
-    backgroundColor: "#ccc",
+    backgroundColor: "#9B80FF",
     borderRadius: 3,
     marginBottom: 15,
   },

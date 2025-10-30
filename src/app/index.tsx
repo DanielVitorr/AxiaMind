@@ -3,10 +3,10 @@ import { Switch, Text, TouchableOpacity, View } from "react-native";
 import Main from "./style";
 
 import MesCarrossel from "@/src/components/MesCarrossel";
-import ResumoFinanceiro from "@/src/components/ResumoFinanceiro";
-import MeusCartoes from "@/src/components/MeusCartoes";
-import MinhaMetas from "@/src/components/MinhasMetas";
-import MeusLimites from "@/src/components/MeusLimites";
+import ResumoFinanceiro from "@/src/components/Cards/ResumoFinanceiro";
+import MeusCartoes from "@/src/components/Cards/MeusCartoes";
+import MinhaMetas from "@/src/components/Cards/MinhasMetas";
+import MeusLimites from "@/src/components/Cards/MeusLimites";
 import BarraDeNavegacao from "../components/BarraDeNavegacao";
 
 import Feather from "@expo/vector-icons/Feather";
@@ -14,6 +14,7 @@ import Feather from "@expo/vector-icons/Feather";
 import { getResumoPorMes, storage } from "../database/mmkvFinancas";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useAppTheme } from "../contexts/ThemeContext";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Index() {
   const [resumo, setResumo] = useState<{
@@ -69,38 +70,39 @@ export default function Index() {
           <Feather name="menu" size={26} color={theme.colors.accent} />
         </Main.Header.Button>
       </Main.Header>
+      <SafeAreaView style={{ flex: 1 }}>
+        <Main.Content>
+          <ResumoFinanceiro
+            totalReceitas={resumo.totalEntradas}
+            totalDespesas={resumo.totalSaidas}
+            saldo={resumo.saldo}
+            totalAPagar={resumo.totalAPagar}
+            totalPago={resumo.totalPagas}
+          />
 
-      <Main.Content>
-        <ResumoFinanceiro
-          totalReceitas={resumo.totalEntradas}
-          totalDespesas={resumo.totalSaidas}
-          saldo={resumo.saldo}
-          totalAPagar={resumo.totalAPagar}
-          totalPago={resumo.totalPagas}
-        />
+          <MeusCartoes />
+          <MinhaMetas />
+          <MeusLimites />
+        </Main.Content>
 
-        <MeusCartoes />
-        <MinhaMetas />
-        <MeusLimites />
-      </Main.Content>
+        <TouchableOpacity
+          onPress={() => {
+            storage.clearAll();
+            alert("Todos os registros foram apagados!");
+            console.log(storage.getAllKeys());
+          }}
+        >
+          <Text>Limpar Registros MMKV</Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity
-        onPress={() => {
-          storage.clearAll();
-          alert("Todos os registros foram apagados!");
-          console.log(storage.getAllKeys());
-        }}
-      >
-        <Text>Limpar Registros MMKV</Text>
-      </TouchableOpacity>
-
-      <Main.Header.Button>
-        <Switch
-          value={themeName === "light"}
-          onValueChange={toggleTheme}
-          thumbColor={themeName === "dark" ? "#f1f1f1" : "#121212"}
-        />
-      </Main.Header.Button>
+        <Main.Header.Button>
+          <Switch
+            value={themeName === "light"}
+            onValueChange={toggleTheme}
+            thumbColor={themeName === "dark" ? "#f1f1f1" : "#121212"}
+          />
+        </Main.Header.Button>
+      </SafeAreaView>
 
       <BarraDeNavegacao />
     </Main>

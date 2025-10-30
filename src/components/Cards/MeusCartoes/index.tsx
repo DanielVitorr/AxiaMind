@@ -1,25 +1,27 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import { Card, CardText, Container, Header, Text, Title } from "./style";
+import { useAppTheme } from "@/src/contexts/ThemeContext";
 
 export default function MeusCartoes() {
+  const { theme } = useAppTheme();
+
   return (
-    <View style={style.container}>
-      <View style={style.containerTitulo}>
-        <View style={style.titulo}>
-          <AntDesign name="credit-card" size={24} color="black" />
-          <Text style={style.tituloTexto}>Meus Cartões</Text>
-        </View>
+    <Container>
+      <Header>
+        <Title>
+          <AntDesign name="credit-card" size={24} color={theme.colors.accent} />
+          <Text>Meus Cartões</Text>
+        </Title>
         <View>
           <TouchableOpacity>
-            <AntDesign name="plus" size={25} color="#3ACD7D" />
+            <AntDesign name="plus" size={25} color={theme.colors.success} />
           </TouchableOpacity>
         </View>
-      </View>
-      <View style={style.containerCartoes}>
-        <Text style={style.textoSecundario}>
-          você não tem nem um cartão cadastrado
-        </Text>
-      </View>
-    </View>
+      </Header>
+      <Card>
+        <CardText>você não tem nem um cartão cadastrado</CardText>
+      </Card>
+    </Container>
   );
 }

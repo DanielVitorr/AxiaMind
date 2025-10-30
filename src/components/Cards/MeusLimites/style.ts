@@ -29,7 +29,7 @@ export const Text = styled.Text`
 
 export const Card = styled.View`
   flex-direction: row;
-  min-height: 100px;
+  /* min-height: 100px; */
   justify-content: center;
   align-items: center;
 `;

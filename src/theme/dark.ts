@@ -16,7 +16,10 @@ export const darkTheme = {
 
     white: "#fff",
     black: "#000",
-    addEntry: "#10B981",
-    addExit: "#F87171",
+
+    Entry: "#10B981", // Entreda / Receitas
+    Exit: "#F87171", // Saida / Despesas
+    toSwitchOff: "#FBBF24", // A Pagar
+    paid: "#3B82F6", // Pago
   },
 };
