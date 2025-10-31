@@ -15,7 +15,7 @@ import "dayjs/locale/pt-br";
 import { style } from "./style";
 import Feather from "@expo/vector-icons/Feather";
 import BarraDeNavegacao from "@/src/components/BarraDeNavegacao";
-import MesCarrossel from "@/src/components/MesCarrossel";
+import MesCarrossel from "@/src/components/Inputs/MesCarrossel";
 import {
   getEntradasPorMes,
   getSaidasPorMes,
@@ -217,8 +217,6 @@ export default function ListaRegistro() {
           <MesCarrossel
             currentDate={currentDate}
             onChangeMonth={setCurrentData}
-            textColorPrimary="#ffffff"
-            textColorSecundary="#ececec"
           />
         </View>
       </View>

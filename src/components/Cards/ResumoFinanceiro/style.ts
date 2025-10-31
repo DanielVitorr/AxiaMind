@@ -3,6 +3,7 @@ import styled from "styled-components/native";
 export const Container = styled.View`
   border-radius: 8px;
   background-color: ${({ theme }: any) => theme.colors.surface};
+  border: 1px solid ${({ theme }: any) => theme.colors.border};
 `;
 
 export const Balance = styled.View`
@@ -11,7 +12,7 @@ export const Balance = styled.View`
   align-items: center;
   padding: 10px;
   border-bottom-width: 1px;
-  border-color: rgba(0, 0, 0, 0.05);
+  border-color: ${({ theme }: any) => theme.colors.border};
 `;
 
 export const Title = styled.Text`

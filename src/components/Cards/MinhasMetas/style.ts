@@ -4,6 +4,7 @@ export const Container = styled.View`
   padding: 20px;
   background-color: ${({ theme }: any) => theme.colors.surface};
   border-radius: 12px;
+  border: 1px solid ${({ theme }: any) => theme.colors.border};
 `;
 
 export const Header = styled.View`
@@ -13,12 +14,13 @@ export const Header = styled.View`
   margin-bottom: 5px;
   padding-bottom: 5px;
   border-bottom-width: 1px;
-  border-bottom-color: rgba(0, 0, 0, 0.05);
+  border-bottom-color: ${({ theme }: any) => theme.colors.border};
 `;
 
 export const Title = styled.View`
   flex-direction: row;
   gap: 10px;
+  align-items: center;
 `;
 
 export const Text = styled.Text`

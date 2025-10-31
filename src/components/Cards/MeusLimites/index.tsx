@@ -1,9 +1,8 @@
-import { TouchableOpacity, View } from "react-native";
+import { TouchableOpacity } from "react-native";
 
-import AntDesign from "@expo/vector-icons/AntDesign";
-import Ionicons from "@expo/vector-icons/Ionicons";
 import { Card, CardText, Container, Header, Text, Title } from "./style";
 import { useAppTheme } from "@/src/contexts/ThemeContext";
+import { MaterialIcons } from "@expo/vector-icons";
 
 export default function MeusLimites() {
   const { theme } = useAppTheme();
@@ -12,15 +11,11 @@ export default function MeusLimites() {
     <Container>
       <Header>
         <Title>
-          <Ionicons
-            name="trophy-outline"
-            size={24}
-            color={theme.colors.accent}
-          />
+          <MaterialIcons name="block" size={30} color={theme.colors.accent} />
           <Text>Meus Limites</Text>
         </Title>
         <TouchableOpacity>
-          <AntDesign name="plus" size={25} color={theme.colors.success} />
+          <MaterialIcons name="add" size={30} color={theme.colors.success} />
         </TouchableOpacity>
       </Header>
       <Card>

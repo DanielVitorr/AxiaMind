@@ -4,7 +4,6 @@ import { useRef } from "react";
 
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import {
-  style,
   Container,
   Button,
   Content,
@@ -12,10 +11,12 @@ import {
   Text,
   Exit,
   Add,
+  Handle,
+  BottonSheet,
 } from "./style";
 import { useAppTheme } from "@/src/contexts/ThemeContext";
 
-export default function BarraDeNavegacao() {
+export default function BarraDeNavegacao({ animatedStyle }: any) {
   const router = useRouter();
   const translateY = useRef(new Animated.Value(300)).current;
 
@@ -79,11 +80,11 @@ export default function BarraDeNavegacao() {
         </Add>
       </View>
 
-      <Animated.View
-        style={[style.bottomSheet, { transform: [{ translateY }] }]}
+      <BottonSheet
         {...panResponder.panHandlers}
+        style={{ transform: [{ translateY }] }}
       >
-        <View style={style.handle} />
+        <Handle />
         <Content>
           <Entry onPress={() => router.push("/pages/RegistroEntrada")}>
             <Text>Registrar Entrada</Text>
@@ -92,7 +93,7 @@ export default function BarraDeNavegacao() {
             <Text>Registrar Saída</Text>
           </Exit>
         </Content>
-      </Animated.View>
+      </BottonSheet>
     </Container>
   );
 }

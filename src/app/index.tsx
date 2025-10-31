@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { Switch, Text, TouchableOpacity, View } from "react-native";
-import Main from "./style";
+import { ScrollView, Switch, Text, TouchableOpacity, View } from "react-native";
+import { Main, Button, Header, Content } from "./style";
 
-import MesCarrossel from "@/src/components/MesCarrossel";
+import MesCarrossel from "@/src/components/Inputs/MesCarrossel";
 import ResumoFinanceiro from "@/src/components/Cards/ResumoFinanceiro";
 import MeusCartoes from "@/src/components/Cards/MeusCartoes";
 import MinhaMetas from "@/src/components/Cards/MinhasMetas";
@@ -14,7 +14,7 @@ import Feather from "@expo/vector-icons/Feather";
 import { getResumoPorMes, storage } from "../database/mmkvFinancas";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useAppTheme } from "../contexts/ThemeContext";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 export default function Index() {
   const [resumo, setResumo] = useState<{
@@ -50,59 +50,70 @@ export default function Index() {
 
   return (
     <Main>
-      <Main.Header>
-        <Main.Header.Button>
+      <Header>
+        <Button>
           <MaterialIcons
             name="notifications"
-            size={26}
+            size={30}
             color={theme.colors.accent}
           />
-        </Main.Header.Button>
-        <View>
-          <MesCarrossel
-            currentDate={currentDate}
-            onChangeMonth={setCurrentDate}
-            textColorPrimary={theme.colors.text}
-            textColorSecundary={theme.colors.textSecondary}
-          />
-        </View>
-        <Main.Header.Button>
-          <Feather name="menu" size={26} color={theme.colors.accent} />
-        </Main.Header.Button>
-      </Main.Header>
-      <SafeAreaView style={{ flex: 1 }}>
-        <Main.Content>
-          <ResumoFinanceiro
-            totalReceitas={resumo.totalEntradas}
-            totalDespesas={resumo.totalSaidas}
-            saldo={resumo.saldo}
-            totalAPagar={resumo.totalAPagar}
-            totalPago={resumo.totalPagas}
-          />
+        </Button>
 
-          <MeusCartoes />
-          <MinhaMetas />
-          <MeusLimites />
-        </Main.Content>
+        <Button>
+          <Feather name="menu" size={30} color={theme.colors.accent} />
+        </Button>
+      </Header>
 
-        <TouchableOpacity
-          onPress={() => {
-            storage.clearAll();
-            alert("Todos os registros foram apagados!");
-            console.log(storage.getAllKeys());
-          }}
-        >
-          <Text>Limpar Registros MMKV</Text>
-        </TouchableOpacity>
+      <SafeAreaProvider>
+        <SafeAreaView style={{ flex: 1 }}>
+          <ScrollView
+            contentContainerStyle={{
+              flexGrow: 1,
+              paddingBottom: 100,
+            }}
+            showsVerticalScrollIndicator={false}
+          >
+            <MesCarrossel
+              currentDate={currentDate}
+              onChangeMonth={setCurrentDate}
+            />
 
-        <Main.Header.Button>
-          <Switch
-            value={themeName === "light"}
-            onValueChange={toggleTheme}
-            thumbColor={themeName === "dark" ? "#f1f1f1" : "#121212"}
-          />
-        </Main.Header.Button>
-      </SafeAreaView>
+            <Content>
+              <ResumoFinanceiro
+                totalReceitas={resumo.totalEntradas}
+                totalDespesas={resumo.totalSaidas}
+                saldo={resumo.saldo}
+                totalAPagar={resumo.totalAPagar}
+                totalPago={resumo.totalPagas}
+              />
+
+              <MeusCartoes />
+              <MinhaMetas />
+              <MeusLimites />
+            </Content>
+
+            <TouchableOpacity
+              onPress={() => {
+                storage.clearAll();
+                alert("Todos os registros foram apagados!");
+                console.log(storage.getAllKeys());
+              }}
+            >
+              <Text style={{ color: theme.colors.text }}>
+                Limpar Registros MMKV
+              </Text>
+            </TouchableOpacity>
+
+            <Button>
+              <Switch
+                value={themeName === "light"}
+                onValueChange={toggleTheme}
+                thumbColor={themeName === "dark" ? "#f1f1f1" : "#121212"}
+              />
+            </Button>
+          </ScrollView>
+        </SafeAreaView>
+      </SafeAreaProvider>
 
       <BarraDeNavegacao />
     </Main>

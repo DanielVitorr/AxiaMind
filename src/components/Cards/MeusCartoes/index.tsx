@@ -1,7 +1,8 @@
-import { TouchableOpacity, View } from "react-native";
-import AntDesign from "@expo/vector-icons/AntDesign";
+import { TouchableOpacity } from "react-native";
+
 import { Card, CardText, Container, Header, Text, Title } from "./style";
 import { useAppTheme } from "@/src/contexts/ThemeContext";
+import { MaterialIcons } from "@expo/vector-icons";
 
 export default function MeusCartoes() {
   const { theme } = useAppTheme();
@@ -10,14 +11,16 @@ export default function MeusCartoes() {
     <Container>
       <Header>
         <Title>
-          <AntDesign name="credit-card" size={24} color={theme.colors.accent} />
+          <MaterialIcons
+            name="credit-card"
+            size={30}
+            color={theme.colors.accent}
+          />
           <Text>Meus Cartões</Text>
         </Title>
-        <View>
-          <TouchableOpacity>
-            <AntDesign name="plus" size={25} color={theme.colors.success} />
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity>
+          <MaterialIcons name="add" size={30} color={theme.colors.success} />
+        </TouchableOpacity>
       </Header>
       <Card>
         <CardText>você não tem nem um cartão cadastrado</CardText>

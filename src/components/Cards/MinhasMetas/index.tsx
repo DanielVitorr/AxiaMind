@@ -1,9 +1,8 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 
-import AntDesign from "@expo/vector-icons/AntDesign";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import { Container, Card, CardText, Header, Title } from "./style";
+import { Container, Card, CardText, Header, Title, Text } from "./style";
 import { useAppTheme } from "@/src/contexts/ThemeContext";
+import { MaterialIcons } from "@expo/vector-icons";
 
 export default function MinhaMetas() {
   const { theme } = useAppTheme();
@@ -12,15 +11,11 @@ export default function MinhaMetas() {
     <Container>
       <Header>
         <Title>
-          <Ionicons
-            name="trophy-outline"
-            size={24}
-            color={theme.colors.accent}
-          />
+          <MaterialIcons name="flag" size={30} color={theme.colors.accent} />
           <Text>Minhas metas</Text>
         </Title>
         <TouchableOpacity>
-          <AntDesign name="plus" size={25} color={theme.colors.success} />
+          <MaterialIcons name="add" size={30} color={theme.colors.success} />
         </TouchableOpacity>
       </Header>
       <Card>
